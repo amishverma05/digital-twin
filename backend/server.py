@@ -15,6 +15,7 @@ load_dotenv()
 
 # Initialize Gemini client (uses API key from env automatically)
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+print("GEMINI_API_KEY present:", bool(os.getenv("GEMINI_API_KEY")))
 
 app = FastAPI()
 
