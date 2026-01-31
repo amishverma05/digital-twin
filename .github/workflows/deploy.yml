@@ -1,8 +1,8 @@
 name: Deploy Digital Twin
 
 on:
-  push:
-    branches: [main]
+  # push:
+    # branches: [main]
   workflow_dispatch:
     inputs:
       environment:
@@ -80,8 +80,7 @@ jobs:
         env:
           AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
 
-          # 👇 THIS IS THE KEY FIX
-          TF_VAR_gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
         run: |
           export AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
