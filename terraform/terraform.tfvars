@@ -1,0 +1,9 @@
+project_name             = "twin"
+environment              = "dev"
+bedrock_model_id         = "gemini-1.5-flash"
+lambda_timeout           = 60
+api_throttle_burst_limit = 10
+api_throttle_rate_limit  = 5
+use_custom_domain        = false
+root_domain              = ""
+gemini_api_key           = "AIzaSyAlhneQcBI-k6XrcRtKo-rmvcQ2d6uTmww"

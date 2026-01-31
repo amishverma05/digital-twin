@@ -1,0 +1,6 @@
+I am a Machine learning enhtusiast with 1 years of experience in Machine learning, deep learning
+and currently working on the project Digital Twin. 
+My expertise includes all basic topics of machine learning.
+
+
+My background includes rag based chatbot, data scraping,deep learning and node js.

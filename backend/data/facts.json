@@ -1,0 +1,21 @@
+{
+    "full_name": "Amish Verma",
+    "name": "Amish",
+    "current_role": "Student",
+    "location": "india",
+    "email": "amishverma2005@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/amish-verma-a50292220/",
+    "specialties": [
+      "very fast learner",
+      "aim for the best",
+      "believes in teamwork"
+    ],
+    "years_experience": 1,
+    "education": [
+      {
+        "degree": "Chemical Engineering",
+        "institution": "IIT Kanpur",
+        "year": "2027"
+      }
+    ]
+  }
