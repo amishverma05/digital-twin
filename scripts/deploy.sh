@@ -15,23 +15,44 @@ echo "📦 Building Lambda package..."
 cd terraform
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 AWS_REGION=${DEFAULT_AWS_REGION:-us-east-1}
+
 terraform init -input=false \
   -backend-config="bucket=twin-terraform-state-${AWS_ACCOUNT_ID}" \
   -backend-config="key=${ENVIRONMENT}/terraform.tfstate" \
   -backend-config="region=${AWS_REGION}" \
   -backend-config="dynamodb_table=twin-terraform-locks" \
   -backend-config="encrypt=true"
+
 if ! terraform workspace list | grep -q "$ENVIRONMENT"; then
   terraform workspace new "$ENVIRONMENT"
 else
   terraform workspace select "$ENVIRONMENT"
 fi
 
+# Fail fast if Gemini key is missing
+if [ -z "$TF_VAR_gemini_api_key" ]; then
+  echo "❌ ERROR: TF_VAR_gemini_api_key is not set"
+  exit 1
+fi
+
 # Use prod.tfvars for production environment
 if [ "$ENVIRONMENT" = "prod" ]; then
-  TF_APPLY_CMD=(terraform apply -var-file=prod.tfvars -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve)
+  TF_APPLY_CMD=(
+    terraform apply
+    -var-file=prod.tfvars
+    -var="project_name=$PROJECT_NAME"
+    -var="environment=$ENVIRONMENT"
+    -var="gemini_api_key=$TF_VAR_gemini_api_key"
+    -auto-approve
+  )
 else
-  TF_APPLY_CMD=(terraform apply -var="project_name=$PROJECT_NAME" -var="environment=$ENVIRONMENT" -auto-approve)
+  TF_APPLY_CMD=(
+    terraform apply
+    -var="project_name=$PROJECT_NAME"
+    -var="environment=$ENVIRONMENT"
+    -var="gemini_api_key=$TF_VAR_gemini_api_key"
+    -auto-approve
+  )
 fi
 
 echo "🎯 Applying Terraform..."
@@ -44,7 +65,6 @@ CUSTOM_URL=$(terraform output -raw custom_domain_url 2>/dev/null || true)
 # 3. Build + deploy frontend
 cd ../frontend
 
-# Create production environment file with API URL
 echo "📝 Setting API URL for production..."
 echo "NEXT_PUBLIC_API_URL=$API_URL" > .env.production
 
