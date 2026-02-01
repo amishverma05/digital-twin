@@ -52,16 +52,15 @@ jobs:
           terraform_wrapper: false  # Important: disable wrapper to get raw outputs
 
       - name: Run Destroy Script
-        run: |
-          # Set environment variables for the script
-          export AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
-          export DEFAULT_AWS_REGION=${{ secrets.DEFAULT_AWS_REGION }}
-          
-          # Make script executable and run it
-          chmod +x scripts/destroy.sh
-          ./scripts/destroy.sh ${{ github.event.inputs.environment }}
         env:
           AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+          TF_VAR_gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          DEFAULT_AWS_REGION: ${{ secrets.DEFAULT_AWS_REGION }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        run: |
+          chmod +x scripts/destroy.sh
+          ./scripts/destroy.sh ${{ github.event.inputs.environment }}
+
 
       - name: Destruction Complete
         run: |
