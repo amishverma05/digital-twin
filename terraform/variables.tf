@@ -44,6 +44,7 @@ variable "use_custom_domain" {
   description = "Attach a custom domain to CloudFront"
   type        = bool
   default     = false
+  
 }
 
 variable "root_domain" {
